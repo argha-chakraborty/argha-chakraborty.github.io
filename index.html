@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Argha Chakraborty | Computational Chemistry Ph.D. Researcher working on molecular self-assembly, molecular dynamics, free-energy landscapes, enhanced sampling and data-driven molecular modeling." />
+  <meta name="author" content="Argha Chakraborty" />
+  <title>Argha Chakraborty | Computational Chemistry</title>
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0d1929;
+      --card: rgba(17, 31, 49, 0.78);
+      --card-solid: #101f32;
+      --text: #edf4ff;
+      --muted: #a8b8cc;
+      --line: rgba(173, 198, 228, 0.16);
+      --accent: #73d0ff;
+      --accent-2: #a78bfa;
+      --accent-3: #55e6b1;
+      --max: 1160px;
+      --radius: 22px;
+      --shadow: 0 20px 70px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(115,208,255,.12), transparent 30%),
+        radial-gradient(circle at 10% 30%, rgba(167,139,250,.10), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      background: rgba(8,17,31,.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -.03em;
+      font-size: 1.05rem;
+    }
+
+    .brand span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      font-size: .92rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 130px 0 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--accent);
+      background: rgba(115,208,255,.06);
+      font-size: .82rem;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-3);
+      box-shadow: 0 0 15px var(--accent-3);
+    }
+
+    h1 {
+      font-size: clamp(3.2rem, 7vw, 6.3rem);
+      line-height: .98;
+      letter-spacing: -.065em;
+      max-width: 850px;
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero-lead {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.14rem;
+      margin: 28px 0 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: #07111f;
+      border-color: var(--text);
+      font-weight: 750;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.035);
+      color: var(--text);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .molecule {
+      position: relative;
+      width: min(420px, 80vw);
+      aspect-ratio: 1;
+      margin: auto;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(115,208,255,.12), transparent 24%),
+        radial-gradient(circle at 30% 30%, rgba(167,139,250,.12), transparent 32%),
+        rgba(255,255,255,.02);
+      box-shadow: inset 0 0 80px rgba(115,208,255,.05), var(--shadow);
+    }
+
+    .molecule::before,
+    .molecule::after {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border: 1px dashed rgba(115,208,255,.35);
+      border-radius: 50%;
+      transform: rotate(35deg);
+    }
+
+    .molecule::after {
+      inset: 25%;
+      transform: rotate(-55deg);
+      border-color: rgba(167,139,250,.35);
+    }
+
+    .atom {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 24px rgba(115,208,255,.65);
+    }
+
+    .atom:nth-child(1) { left: 50%; top: 18%; }
+    .atom:nth-child(2) { left: 76%; top: 38%; background: var(--accent-2); }
+    .atom:nth-child(3) { left: 66%; top: 72%; }
+    .atom:nth-child(4) { left: 28%; top: 67%; background: var(--accent-3); }
+    .atom:nth-child(5) { left: 20%; top: 37%; background: var(--accent-2); }
+    .atom:nth-child(6) { left: 47%; top: 47%; width: 30px; height: 30px; }
+
+    section { padding: 105px 0; }
+    .section-head { margin-bottom: 42px; max-width: 760px; }
+    .section-kicker {
+      color: var(--accent);
+      font-size: .82rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -.045em;
+      line-height: 1.05;
+    }
+
+    .section-intro { color: var(--muted); margin-top: 14px; font-size: 1.02rem; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .about-copy p + p { margin-top: 16px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 22px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      letter-spacing: -.05em;
+    }
+
+    .stat span { color: var(--muted); font-size: .88rem; }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .research-card {
+      min-height: 250px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .research-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      right: -70px;
+      bottom: -80px;
+      background: rgba(115,208,255,.08);
+    }
+
+    .research-number {
+      color: var(--accent);
+      font-size: .82rem;
+      font-weight: 800;
+      margin-bottom: 35px;
+    }
+
+    .research-card h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    .research-card p { color: var(--muted); font-size: .94rem; }
+
+    .pub-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .filter {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .filter.active, .filter:hover {
+      color: var(--text);
+      border-color: rgba(115,208,255,.45);
+      background: rgba(115,208,255,.08);
+    }
+
+    .pub-list { display: grid; gap: 14px; }
+
+    .pub {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 22px;
+      align-items: start;
+      padding: 25px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      border-radius: 18px;
+      transition: .2s ease;
+    }
+
+    .pub:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.04);
+    }
+
+    .pub-year {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .pub h3 {
+      font-size: 1.05rem;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .pub-authors { color: var(--muted); font-size: .88rem; }
+    .pub-journal { color: var(--accent-3); font-size: .86rem; margin-top: 7px; }
+
+    .pub a {
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: .83rem;
+      white-space: nowrap;
+    }
+
+    .pub a:hover { color: var(--text); border-color: var(--accent); }
+
+    .timeline { position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 5px;
+      bottom: 5px;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 42px;
+      padding-bottom: 36px;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .dot {
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      width: 13px;
+      height: 13px;
+      border: 3px solid var(--bg);
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 1px rgba(115,208,255,.45);
+    }
+
+    .timeline-date { color: var(--accent); font-size: .85rem; font-weight: 750; }
+    .timeline h3 { margin: 5px 0; font-size: 1.1rem; }
+    .timeline p { color: var(--muted); font-size: .93rem; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 8px 11px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      color: #c9d7e9;
+      font-size: .85rem;
+    }
+
+    .contact {
+      text-align: center;
+      padding-bottom: 75px;
+    }
+
+    .contact-box {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 52px 30px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(115,208,255,.12), transparent 45%),
+        var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-box p {
+      max-width: 650px;
+      margin: 16px auto 26px;
+      color: var(--muted);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: #7f91a8;
+      font-size: .82rem;
+      padding: 24px 0 34px;
+    }
+
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: rise .8s ease forwards;
+    }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .about-grid, .two-col { grid-template-columns: 1fr; }
+      .molecule { width: 310px; }
+      .research-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 650px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      section { padding: 75px 0; }
+      .hero { padding-top: 110px; }
+      h1 { font-size: 3.25rem; }
+      .pub { grid-template-columns: 1fr; gap: 10px; }
+      .pub a { width: fit-content; }
+      .card { padding: 22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">Argha<span></span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="fade">
+          <div class="eyebrow">Computational Chemistry · Molecular Simulation</div>
+          <h1>Argha<br><span class="accent">Chakraborty</span></h1>
+          <p class="hero-lead">
+            Ph.D. researcher in computational chemistry at the Indian Association for
+            the Cultivation of Science, studying molecular self-assembly through
+            atomistic simulations, statistical mechanics, enhanced sampling and
+            data-driven analysis.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#publications">Explore my research</a>
+            <a class="btn btn-secondary" href="argha_cv.pdf" target="_blank">View CV</a>
+          </div>
+        </div>
+
+        <div class="molecule fade" aria-label="Abstract molecular graphic">
+          <span class="atom"></span><span class="atom"></span><span class="atom"></span>
+          <span class="atom"></span><span class="atom"></span><span class="atom"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">About</div>
+          <h2>Understanding how molecules organize themselves.</h2>
+          <p class="section-intro">
+            My research combines molecular simulation, statistical mechanics and
+            computational analysis to understand the kinetics, thermodynamics and
+            mechanisms of molecular self-assembly.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="card about-copy">
+            <p>
+              I am a Computational Chemistry Ph.D. researcher at the School of
+              Chemical Sciences, Indian Association for the Cultivation of Science,
+              Kolkata. My doctoral research focuses on the kinetic mechanism and
+              free-energy landscape of molecular self-assembly.
+            </p>
+            <p>
+              I develop simulation and analysis workflows for complex molecular
+              systems, including enhanced sampling, free-energy calculations,
+              cluster-based pathway analysis and multidimensional interaction-space
+              analysis.
+            </p>
+            <p>
+              A major focus of my work is connecting microscopic molecular
+              interactions and conformational properties with emergent assembly
+              behavior at larger length and time scales.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="stats">
+              <div class="stat"><strong>4</strong><span>Peer-reviewed publications</span></div>
+              <div class="stat"><strong>2022–27</strong><span>Ph.D. research period</span></div>
+              <div class="stat"><strong>MD</strong><span>Atomistic molecular simulation</span></div>
+              <div class="stat"><strong>HPC</strong><span>Large-scale computational analysis</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Research</div>
+          <h2>From molecular interactions to assembly pathways.</h2>
+          <p class="section-intro">
+            My recent work develops complementary ways of looking at self-assembly:
+            pathway events, time-dependent interaction patterns, and free-energy
+            landscapes of single molecules and molecular pairs.
+          </p>
+        </div>
+
+        <div class="research-grid">
+          <article class="card research-card">
+            <div class="research-number">01 / PATHWAYS</div>
+            <h3>Event Tracking</h3>
+            <p>
+              A systematic analysis of rearrangements of spatial clusters across
+              multiple length and time scales, used to reveal pathway complexity in
+              hydrophobic peptide assembly.
+            </p>
+          </article>
+
+          <article class="card research-card">
+            <div class="research-number">02 / INTERACTIONS</div>
+            <h3>TAMCIS</h3>
+            <p>
+              Temporal Analysis of Multidimensional Chemical Interaction Space,
+              describing assembly mechanisms through combinations of chemically
+              meaningful intermolecular interactions.
+            </p>
+          </article>
+
+          <article class="card research-card">
+            <div class="research-number">03 / FREE ENERGY</div>
+            <h3>Predictive Molecular Landscapes</h3>
+            <p>
+              Free-energy calculations of single-peptide conformations and
+              bi-molecular associations to connect molecular properties with
+              nanoscale assembly behavior.
+            </p>
+          </article>
+
+          <article class="card research-card">
+            <div class="research-number">04 / SIMULATION</div>
+            <h3>Enhanced Sampling</h3>
+            <p>
+              Umbrella sampling, temperature-accelerated molecular dynamics and
+              metadynamics-based workflows for exploring complex and high-barrier
+              molecular states.
+            </p>
+          </article>
+
+          <article class="card research-card">
+            <div class="research-number">05 / SOLVENT</div>
+            <h3>Water Dynamics</h3>
+            <p>
+              Atomistic analysis of the role of on-pathway interfacial water
+              dynamics in peptide self-assembly and nanofibre formation.
+            </p>
+          </article>
+
+          <article class="card research-card">
+            <div class="research-number">06 / COMPUTATION</div>
+            <h3>Scientific Workflows</h3>
+            <p>
+              Python- and OpenMM-based workflows for molecular dynamics, structural
+              analysis, free-energy calculations and large-scale trajectory analysis
+              on HPC environments.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Publications</div>
+          <h2>Selected research articles.</h2>
+          <p class="section-intro">
+            Four recent peer-reviewed publications covering pathway analysis,
+            solvent dynamics, interaction-space analysis and free-energy-based
+            interpretation of peptide self-assembly.
+          </p>
+        </div>
+
+        <div class="pub-controls">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="2026">2026</button>
+          <button class="filter" data-filter="2025">2025</button>
+          <button class="filter" data-filter="method">Methods</button>
+          <button class="filter" data-filter="free-energy">Free energy</button>
+        </div>
+
+        <div class="pub-list">
+          <article class="pub" data-year="2026" data-tags="free-energy">
+            <div class="pub-year">2026</div>
+            <div>
+              <h3>How predictive is peptide self-assembly?: correlating single- and bi-molecular structural properties with nanoscale assemblies</h3>
+              <div class="pub-authors"><strong>Argha Chakraborty</strong> and Avisek Das</div>
+              <div class="pub-journal">Chemical Communications, 2026, 62, 17966–17970</div>
+            </div>
+            <a href="https://doi.org/10.1039/d6cc03398a" target="_blank" rel="noopener">DOI ↗</a>
+          </article>
+
+          <article class="pub" data-year="2025" data-tags="water">
+            <div class="pub-year">2025</div>
+            <div>
+              <h3>Atomistic picture of the self-assembly dynamics of phenylalanine tripeptide into nanofibres: hierarchical mechanism and the role of on-pathway water dynamics</h3>
+              <div class="pub-authors">Rumela Adhikary, <strong>Argha Chakraborty</strong>, Sangeeta Das and Avisek Das</div>
+              <div class="pub-journal">Chemical Communications, 2025, 61, 16966–16969</div>
+            </div>
+            <a href="https://doi.org/10.1039/d5cc03643g" target="_blank" rel="noopener">DOI ↗</a>
+          </article>
+
+          <article class="pub" data-year="2025" data-tags="method">
+            <div class="pub-year">2025</div>
+            <div>
+              <h3>Understanding pathway complexity in assembly mechanisms of hydrophobic peptides in water: Insights from atomistic simulations via event tracking</h3>
+              <div class="pub-authors"><strong>Argha Chakraborty</strong>, Rumela Adhikary, Sangeeta Das and Avisek Das</div>
+              <div class="pub-journal">The Journal of Chemical Physics, 162, 194712 (2025)</div>
+            </div>
+            <a href="https://doi.org/10.1063/5.0261115" target="_blank" rel="noopener">DOI ↗</a>
+          </article>
+
+          <article class="pub" data-year="2025" data-tags="method">
+            <div class="pub-year">2025</div>
+            <div>
+              <h3>Correlating molecular structures and self-assembly mechanisms via temporal analysis of multidimensional chemical interaction space: application to assemblies of isomeric peptides</h3>
+              <div class="pub-authors">Sangeeta Das, Rumela Adhikary, Snehamay Bagchi, <strong>Argha Chakraborty</strong> and Avisek Das</div>
+              <div class="pub-journal">Physical Chemistry Chemical Physics, 2025, 27, 11264–11276</div>
+            </div>
+            <a href="https://doi.org/10.1039/d4cp04597a" target="_blank" rel="noopener">DOI ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Experience & Education</div>
+          <h2>A research profile built around computation.</h2>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="timeline">
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2022 – Present</div>
+                <h3>Senior Research Fellow</h3>
+                <p>School of Chemical Sciences, Indian Association for the Cultivation of Science, Kolkata.</p>
+                <p>Research on peptide self-assembly, kinetics, enhanced sampling, event tracking, interaction-space analysis and large-scale trajectory analysis.</p>
+              </div>
+
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2022 – 2027 · Expected</div>
+                <h3>Ph.D. in Chemistry</h3>
+                <p>Indian Association for the Cultivation of Science, Kolkata.</p>
+                <p>Thesis: <em>Kinetic Mechanism and Free Energy Landscape of Molecular Self-assembly</em>.</p>
+              </div>
+
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2020 – 2022</div>
+                <h3>M.Sc. in Chemistry</h3>
+                <p>Indian Association for the Cultivation of Science, Kolkata.</p>
+              </div>
+
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2017 – 2020</div>
+                <h3>B.Sc. in Chemistry (Honours)</h3>
+                <p>St. Xavier’s College, University of Calcutta, Kolkata.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Technical expertise</h3>
+            <div class="skill-list">
+              <span class="tag">Classical Molecular Dynamics</span>
+              <span class="tag">Enhanced Sampling</span>
+              <span class="tag">Free Energy Calculations</span>
+              <span class="tag">Machine Learning Interatomic Potentials</span>
+              <span class="tag">Ab initio Molecular Dynamics</span>
+              <span class="tag">OpenMM</span>
+              <span class="tag">NAMD</span>
+              <span class="tag">PLUMED</span>
+              <span class="tag">CHARMM</span>
+              <span class="tag">VMD</span>
+              <span class="tag">PyMOL</span>
+              <span class="tag">Python</span>
+              <span class="tag">NumPy</span>
+              <span class="tag">SciPy</span>
+              <span class="tag">PyTorch</span>
+              <span class="tag">MDAnalysis</span>
+              <span class="tag">MDTraj</span>
+              <span class="tag">Pandas</span>
+              <span class="tag">Bash</span>
+              <span class="tag">Linux / HPC</span>
+            </div>
+
+            <hr style="border:0;border-top:1px solid var(--line);margin:28px 0">
+
+            <h3>Teaching</h3>
+            <div class="skill-list">
+              <span class="tag">Quantum Mechanics of Atoms and Molecules</span>
+              <span class="tag">Advanced Scientific Laboratory</span>
+              <span class="tag">National Supercomputing Mission Workshop</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="two-col">
+          <div class="card">
+            <div class="section-kicker">Awards & Fellowships</div>
+            <h2 style="font-size:2rem">Recognition</h2>
+            <div class="timeline" style="margin-top:28px">
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2024</div>
+                <h3>Best Poster Presentation Award</h3>
+                <p>Interdisciplinary Symposium on Materials Chemistry, Bhabha Atomic Research Centre, Mumbai.</p>
+              </div>
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">2024</div>
+                <h3>Best Poster Presentation Award</h3>
+                <p>MD@60, Jawaharlal Nehru Centre for Advanced Scientific Research, Bangalore.</p>
+              </div>
+              <div class="timeline-item">
+                <span class="dot"></span>
+                <div class="timeline-date">Fellowship</div>
+                <h3>DST INSPIRE Scholarship</h3>
+                <p>Department of Science and Technology, Government of India.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-kicker">Conferences</div>
+            <h2 style="font-size:2rem">Selected presentations</h2>
+            <div class="skill-list">
+              <span class="tag">Theoretical Chemistry Symposium 2025 · IIT Mumbai</span>
+              <span class="tag">Recent Advances in Modelling Rare Events 2025 · Khajuraho</span>
+              <span class="tag">Interdisciplinary Symposium on Materials Chemistry 2024 · BARC Mumbai</span>
+              <span class="tag">MD@60 2024 · JNCASR Bangalore</span>
+              <span class="tag">Theoretical Chemistry Symposium 2023 · IIT Madras</span>
+              <span class="tag">Integrative Multiscale Modelling 2023 · IISc Bangalore</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="contact-box">
+          <div class="section-kicker">Contact</div>
+          <h2>Let's talk research.</h2>
+          <p>
+            For research collaborations, scientific discussions, computational
+            chemistry opportunities or questions about my work, feel free to get in touch.
+          </p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:arghachakraborty18@gmail.com">Email me</a>
+            <a class="btn btn-secondary" href="https://github.com/argha-chakraborty" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/argha-chakraborty-359b02239/" target="_blank" rel="noopener">LinkedIn</a>
+            <!-- Replace the URL below with your Google Scholar profile URL. -->
+            <a class="btn btn-secondary" href="https://scholar.google.com/citations?user=RngajaEAAAAJ&hl=en" target="_blank" rel="noopener" >Google Scholar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Argha Chakraborty · Computational Chemistry · Kolkata, India
+    </div>
+  </footer>
+
+  <script>
+    // Publication filtering
+    const filters = document.querySelectorAll(".filter");
+    const publications = document.querySelectorAll(".pub");
+
+    filters.forEach(filter => {
+      filter.addEventListener("click", () => {
+        filters.forEach(f => f.classList.remove("active"));
+        filter.classList.add("active");
+
+        const value = filter.dataset.filter;
+
+        publications.forEach(pub => {
+          const yearMatch = value === "all" || pub.dataset.year === value;
+          const tagMatch = value === "method" || value === "free-energy"
+            ? pub.dataset.tags.includes(value)
+            : true;
+
+          pub.style.display = (yearMatch && tagMatch) ? "grid" : "none";
+        });
+      });
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
